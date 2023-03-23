@@ -1,26 +1,24 @@
 //axios import buraya gelecek
-
+import axios from "axios";
 var benimIP;
-
 
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
 require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+async function ipAdresimiAl() {
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipadresim",
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
@@ -67,6 +65,58 @@ async function ipAdresimiAl(){
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
 
-
-
 //kodlar buraya gelecek
+
+axios
+  .get("https://apis.ergineer.com/ipgeoapi/94.252.122.166")
+  .then((response) => {
+    console.log("basarili");
+    const ulkeDinamik = response.data;
+    const card = bayrakOlustur(ulkeDinamik);
+    const cardsElement = document.querySelector(".cards");
+    cardsElement.appendChild(card);
+  })
+  .catch((error) => {
+    console.log("başarısız", error);
+  });
+
+function bayrakOlustur(data) {
+  console.log("data bilgi: ", data);
+
+  const anaDiv = document.createElement("div");
+  anaDiv.classList.add("card");
+
+  const flag = document.createElement("img");
+  flag.src = "https://flagshub.com/images/flag-of-luxembourg.png";
+
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+
+  const ip = document.createElement("h3");
+  ip.classList.add("ip");
+  ip.textContent = data.sorgu;
+
+  const country = document.createElement("p");
+  country.classList.add("ulke");
+  country.textContent = `${data.ülke} (${data.ülkeKodu})`;
+
+  const lat = document.createElement("p");
+  lat.textContent = `Enlem: ${data.enlem} Boylam: ${data.boylam}`;
+
+  const city = document.createElement("p");
+  city.textContent = `Şehir: ${data.şehir}`;
+
+  const timezone = document.createElement("p");
+  timezone.textContent = `Saat dilimi: ${data.saatdilimi}`;
+
+  const currency = document.createElement("p");
+  currency.textContent = `Para birimi: ${data.parabirimi}`;
+
+  const isp = document.createElement("p");
+  isp.textContent = `ISP: ${data.isp}`;
+
+  cardInfo.append(ip, country, lat, city, timezone, currency, isp);
+  anaDiv.append(flag, cardInfo);
+
+  return anaDiv;
+}
