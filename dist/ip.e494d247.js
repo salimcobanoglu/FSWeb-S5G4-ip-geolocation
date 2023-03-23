@@ -13505,14 +13505,17 @@ function _ipAdresimiAl() {
   }));
   return _ipAdresimiAl.apply(this, arguments);
 }
-_axios.default.get("https://apis.ergineer.com/ipgeoapi/94.252.122.166").then(function (response) {
-  console.log("basarili");
-  var ulkeDinamik = response.data;
-  var card = bayrakOlustur(ulkeDinamik);
-  var cardsElement = document.querySelector(".cards");
-  cardsElement.appendChild(card);
-}).catch(function (error) {
-  console.log("başarısız", error);
+ipAdresimiAl().then(function () {
+  var url = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
+  _axios.default.get(url).then(function (response) {
+    console.log("basarili");
+    var ulkeDinamik = response.data;
+    var card = bayrakOlustur(ulkeDinamik);
+    var cardsElement = document.querySelector(".cards");
+    cardsElement.appendChild(card);
+  }).catch(function (error) {
+    console.log("başarısız", error);
+  });
 });
 function bayrakOlustur(data) {
   console.log("data bilgi: ", data);

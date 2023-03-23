@@ -67,18 +67,21 @@ async function ipAdresimiAl() {
 
 //kodlar buraya gelecek
 
-axios
-  .get("https://apis.ergineer.com/ipgeoapi/94.252.122.166")
-  .then((response) => {
-    console.log("basarili");
-    const ulkeDinamik = response.data;
-    const card = bayrakOlustur(ulkeDinamik);
-    const cardsElement = document.querySelector(".cards");
-    cardsElement.appendChild(card);
-  })
-  .catch((error) => {
-    console.log("başarısız", error);
-  });
+ipAdresimiAl().then(() => {
+  var url = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
+  axios
+    .get(url)
+    .then((response) => {
+      console.log("basarili");
+      const ulkeDinamik = response.data;
+      const card = bayrakOlustur(ulkeDinamik);
+      const cardsElement = document.querySelector(".cards");
+      cardsElement.appendChild(card);
+    })
+    .catch((error) => {
+      console.log("başarısız", error);
+    });
+});
 
 function bayrakOlustur(data) {
   console.log("data bilgi: ", data);
